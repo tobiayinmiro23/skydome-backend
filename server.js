@@ -34,7 +34,16 @@ if(process.env.PORT === 'production'){
   client.connect();
 
   // routes
- 
+ app.get('/',async(req,res)=>{
+    try{
+      
+      res.json("we're live")
+    }catch(err){
+        res.json(" an error occurred  please try again later")
+     }
+  })
+
+
   // for getting all the products
   app.get('/allproduct',async(req,res)=>{
     try{
