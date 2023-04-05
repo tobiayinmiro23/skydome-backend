@@ -13,7 +13,7 @@ app.get('/',(req,res)=>{
         res.send("we're live !!")
 })
 app.post('/pay',async(req,ress)=>{
-  if(req.headers.authorization == process.env.AUTHORIZATION_KEY){
+  if(req.headers.authorization === process.env.AUTHORIZATION_KEY){
     const{email}=req.body
     const https = require('https')
     const params = JSON.stringify({
