@@ -66,7 +66,7 @@ app.post('/pay',async(req,ress)=>{
       path: '/transaction/verify/'+ reference,
       method: 'GET',
       headers: {  
-        Authorization: 'Bearer sk_live_ec749266c4dead70ed0a053fd3b50e5378e19d58'
+        Authorization:  process.env.SECRET_KEY
       }
     }
     
