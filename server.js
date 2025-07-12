@@ -78,7 +78,7 @@ app.post('/pay',async(req,ress)=>{
       });
   
       res.on('end', () => {
-        console.log(JSON.parse(data))
+        console.log('success')
         ress.send(data)
       })
     }).on('error', error => {
