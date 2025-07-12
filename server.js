@@ -1,8 +1,9 @@
 const express = require("express")
 const cors = require('cors')
 const dotenv = require('dotenv').config()
-console.log()
 const app=express() 
+
+
 app.use(cors())
 app.use(express.json())
 const port=process.env.PORT || 3001
@@ -39,7 +40,7 @@ app.post('/pay',async(req,ress)=>{
   
     });
     res.on('end', () => {   
-      console.log(JSON.parse(data))
+      console.log('success')
     })
   }).on('error', error => {
     console.error(error)
