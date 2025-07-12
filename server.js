@@ -2,7 +2,6 @@ const express = require("express")
 const cors = require('cors')
 const dotenv = require('dotenv').config()
 console.log()
-// app config
 const app=express() 
 app.use(cors())
 app.use(express.json())
@@ -13,7 +12,6 @@ app.get('/',(req,res)=>{
         res.send("we're live !!")
 })
 app.post('/pay',async(req,ress)=>{
- // if(req.headers.authorization === process.env.AUTHORIZATION_KEY){
     const{email}=req.body
     const https = require('https')
     const params = JSON.stringify({
@@ -51,9 +49,6 @@ app.post('/pay',async(req,ress)=>{
   
   pay.write(params)
   pay.end()
-//}else{
-// ress.json('unauthorized user')
-//}
   
   })   
   app.post('/verify',async(req,ress)=>{
