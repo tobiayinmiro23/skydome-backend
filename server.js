@@ -32,7 +32,7 @@ app.post('/pay',async(req,ress)=>{
   }
   
   let data = ''
-  const pay = https.request(options, res => {
+  const pay = https.request(options, paystackRes => {
   
      paystackRes.on('data', (chunk) => {
       data += chunk;
