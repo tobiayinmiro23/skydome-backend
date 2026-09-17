@@ -12,14 +12,15 @@ const port=process.env.PORT || 3001
 app.get('/',(req,res)=>{
         res.send("we're live !!")
 })
-app.post('/pay',async(req,res)=>{
-    const{email}=req.body
-    const https = require('https')
-    const params = JSON.stringify({
-      "email": email,
-      "amount": "10000"
-    })  
-  
+app.post('/pay', async (req, res) => {
+  const { email } = req.body;
+  const https = require('https');
+
+  const params = JSON.stringify({
+    email: email,
+    amount: "10000"
+  });
+
   const options = {
     hostname: 'api.paystack.co',
     port: 443,
@@ -29,55 +30,64 @@ app.post('/pay',async(req,res)=>{
       Authorization: process.env.SECRET_KEY,
       'Content-Type': 'application/json'
     }
-  }
-  
-  let data = ''
-  const pay = https.request(options, paystackRes => {
-  
-     paystackRes.on('data', (chunk) => {
+  };
+
+  let data = '';
+
+  const pay = https.request(options, (paystackRes) => {
+
+    paystackRes.on('data', (chunk) => {
       data += chunk;
     });
-          
+
     paystackRes.on('end', () => {
       res.send(data);
-    }).on('error', error => {
-    res.send(error)
-  })
-  
-  pay.write(params)
-  pay.end()
-  
-  })   
-  app.post('/verify',async(req,ress)=>{
-    const https = require('https')
-    const {reference}=req.body  
-    console.log(reference)
-    const options = {
-      hostname: 'api.paystack.co',
-      port: 443,
-      path: '/transaction/verify/'+ reference,
-      method: 'GET',
-      headers: {  
-        Authorization:  process.env.SECRET_KEY
-      }
+    });
+
+  });
+
+  pay.on('error', (error) => {
+    console.error(error);
+
+    if (!res.headersSent) {
+      res.status(500).send(error.message);
     }
-    
-    https.request(options, res => {
-      let data = ''  
-    
-      res.on('data', (chunk) => {
-        data += chunk
-      });
-  
-      res.on('end', () => {
-        console.log('success')
-        ress.send(data)
-      })
-    }).on('error', error => {
-      console.error(error)
-    })
-  
-  })
+  });
+
+  pay.write(params);
+  pay.end();
+
+});
+app.post('/verify',async(req,ress)=>{
+const https = require('https')
+const {reference}=req.body  
+console.log(reference)
+const options = {
+hostname: 'api.paystack.co',
+port: 443,
+path: '/transaction/verify/'+ reference,
+method: 'GET',
+headers: {  
+Authorization:  process.env.SECRET_KEY
+}
+}
+
+https.request(options, res => {
+let data = ''  
+
+res.on('data', (chunk) => {
+data += chunk
+})
+
+res.on('end', () => {
+console.log('success')
+ress.send(data)
+})
+}).on('error', error => {
+console.error(error)
+})
+
+})
 
 
 app.listen(port,()=>console.log('listening an port '+ port))
