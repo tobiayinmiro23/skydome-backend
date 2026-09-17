@@ -34,11 +34,10 @@ app.post('/pay',async(req,ress)=>{
   let data = ''
   const pay = https.request(options, res => {
   
-    res.on('data', (chunk) => {
-      data += chunk
-      ress.send(data)
-  
+     paystackRes.on('data', (chunk) => {
+      data += chunk;
     });
+          
     res.on('end', () => {   
       console.log('success')
     })
