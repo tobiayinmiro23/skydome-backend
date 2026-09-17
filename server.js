@@ -12,7 +12,7 @@ const port=process.env.PORT || 3001
 app.get('/',(req,res)=>{
         res.send("we're live !!")
 })
-app.post('/pay',async(req,ress)=>{
+app.post('/pay',async(req,res)=>{
     const{email}=req.body
     const https = require('https')
     const params = JSON.stringify({
@@ -38,13 +38,10 @@ app.post('/pay',async(req,ress)=>{
       data += chunk;
     });
           
-    res.on('end', () => {   
-      console.log('success')
-    })
-  }).on('error', error => {
-    console.error(error)
-    ress.send(error)
-  
+    paystackRes.on('end', () => {
+      res.send(data);
+    }).on('error', error => {
+    res.send(error)
   })
   
   pay.write(params)
